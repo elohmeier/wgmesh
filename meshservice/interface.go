@@ -125,7 +125,7 @@ func (ms *MeshService) AssignJoiningNodeIP(ip string) error {
 		return err
 	}
 	if len(a) == 0 {
-		cmd := exec.Command("/sbin/ip", "address", "add", "dev", intfName, ip)
+		cmd := exec.Command("ip", "address", "add", "dev", intfName, ip)
 		var stdout, stderr bytes.Buffer
 		cmd.Stdout = &stdout
 		cmd.Stderr = &stderr
@@ -135,7 +135,7 @@ func (ms *MeshService) AssignJoiningNodeIP(ip string) error {
 		}
 		_, errStr := string(stdout.Bytes()), string(stderr.Bytes())
 		if len(errStr) > 0 {
-			e := fmt.Sprintf("/sbin/ip reported: %s", errStr)
+			e := fmt.Sprintf("ip reported: %s", errStr)
 			return errors.New(e)
 		}
 	}
