@@ -16,7 +16,7 @@ import (
 	"syscall"
 	"time"
 
-	wgwrapper "github.com/aschmidt75/go-wg-wrapper/pkg/wgwrapper"
+	wgwrapper "github.com/aschmidt75/wgmesh/wgwrapper"
 	config "github.com/aschmidt75/wgmesh/config"
 	meshservice "github.com/aschmidt75/wgmesh/meshservice"
 	"github.com/cristalhq/jwt/v3"

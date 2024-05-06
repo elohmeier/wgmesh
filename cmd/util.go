@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	wgwrapper "github.com/aschmidt75/go-wg-wrapper/pkg/wgwrapper"
+	"github.com/aschmidt75/wgmesh/wgwrapper"
 )
 
 // given an IP address or interface name or empty, this returns the IP

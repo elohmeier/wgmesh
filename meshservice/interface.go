@@ -8,7 +8,7 @@ import (
 	"net"
 	"os/exec"
 
-	wgwrapper "github.com/aschmidt75/go-wg-wrapper/pkg/wgwrapper"
+	"github.com/aschmidt75/wgmesh/wgwrapper"
 	log "github.com/sirupsen/logrus"
 )
 

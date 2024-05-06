@@ -6,7 +6,7 @@ import (
 	"net"
 	"time"
 
-	wgwrapper "github.com/aschmidt75/go-wg-wrapper/pkg/wgwrapper"
+	"github.com/aschmidt75/wgmesh/wgwrapper"
 	serf "github.com/hashicorp/serf/serf"
 	grpc "google.golang.org/grpc"
 )

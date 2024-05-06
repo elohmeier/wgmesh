@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	wgwrapper "github.com/aschmidt75/go-wg-wrapper/pkg/wgwrapper"
+	wgwrapper "github.com/aschmidt75/wgmesh/wgwrapper"
 	"github.com/cristalhq/jwt/v3"
 	log "github.com/sirupsen/logrus"
 	grpc "google.golang.org/grpc"
