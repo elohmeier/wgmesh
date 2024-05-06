@@ -29,9 +29,6 @@ type Config struct {
 	// Agent contains optional agent configuration
 	Agent *AgentConfig `yaml:"agent,omitempty"`
 
-	// UI contains web user interface configuration
-	UI *UIConfig `yaml:"ui,omitempty"`
-
 	// MemberlistFile is an optional setting. If set, node information is written
 	// here periodically
 	MemberlistFile string `yaml:"memberlist-file"`
@@ -120,12 +117,6 @@ type AgentConfig struct {
 	GRPCSocket string `yaml:"agent-grpc-socket"`
 }
 
-// UIConfig contains config entries for the web user interface
-type UIConfig struct {
-	HTTPBindAddr string `yaml:"http-bind-addr"`
-	HTTPBindPort int    `yaml:"http-bind-port"`
-}
-
 // LoadConfigFromFile reads yaml config file from given path
 func (cfg *Config) LoadConfigFromFile(path string) error {
 	b, err := ioutil.ReadFile(path)
@@ -175,10 +166,6 @@ func NewDefaultConfig() Config {
 			GRPCBindSocket:    envStrWithDefault("WGMESH_AGENT_BIND_SOCKET", "/var/run/wgmesh.sock"),
 			GRPCBindSocketIDs: envStrWithDefault("WGMESH_AGENT_BIND_SOCKET_ID", ""),
 			GRPCSocket:        envStrWithDefault("WGMESH_AGENT_SOCKET", "/var/run/wgmesh.sock"),
-		},
-		UI: &UIConfig{
-			HTTPBindAddr: envStrWithDefault("WGMESH_HTTP_BIND_ADDR", "127.0.0.1"),
-			HTTPBindPort: envIntWithDefault("WGMESH_HTTP_BIND_PORT", 9095),
 		},
 		MemberlistFile: envStrWithDefault("WGMESH_MEMBERLIST_FILE", ""),
 	}

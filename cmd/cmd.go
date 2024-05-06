@@ -29,7 +29,6 @@ var cmds = []Runner{
 	NewTagsCommand(),
 	NewRTTCommand(),
 	NewInfoCommand(),
-	NewUICommand(),
 }
 
 // ProcessCommands takes the command line arguments and
