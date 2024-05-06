@@ -63,6 +63,7 @@ func NewJoinCommand() *JoinCommand {
 	c.fs.StringVar(&c.meshConfig.Join.ClientKey, "client-key", c.meshConfig.Join.ClientKey, "points to PEM-encoded private key to be used.\nenv:WGMESH_CLIENT_KEY")
 	c.fs.StringVar(&c.meshConfig.Join.ClientCert, "client-cert", c.meshConfig.Join.ClientCert, "points to PEM-encoded certificate be used.\nenv:WGMESH_CLIENT_CERT")
 	c.fs.StringVar(&c.meshConfig.Join.ClientCaCert, "ca-cert", c.meshConfig.Join.ClientCaCert, "points to PEM-encoded CA certificate.\nenv:WGMESH_CA_CERT")
+    c.fs.IntVar(&c.meshConfig.Join.SerfPort, "serf-port", c.meshConfig.Join.SerfPort, "port used by serf.\nenv:WGMESH_SERF_PORT")
 	c.fs.StringVar(&c.meshConfig.MemberlistFile, "memberlist-file", c.meshConfig.MemberlistFile, "optional name of file for a log of all current mesh members.\nenv:WGMESH_MEMBERLIST_FILE")
 	c.fs.StringVar(&c.meshConfig.Agent.GRPCBindSocket, "agent-grpc-bind-socket", c.meshConfig.Agent.GRPCBindSocket, "local socket file to bind grpc agent to.\nenv:WGMESH_AGENT_BIND_SOCKET")
 	c.fs.StringVar(&c.meshConfig.Agent.GRPCBindSocketIDs, "agent-grpc-bind-socket-id", c.meshConfig.Agent.GRPCBindSocketIDs, "<uid:gid> to change bind socket to.\nenv:WGMESH_AGENT_BIND_SOCKET_ID")
@@ -382,7 +383,7 @@ func (g *JoinCommand) Run() error {
 	}
 
 	// start the serf part. make it join all received peers
-	err = g.serfSetup(&ms, listenIP, meshPeerIPs, joinResponse.SerfModeLAN)
+	err = g.serfSetup(&ms, listenIP, meshPeerIPs, joinResponse.SerfModeLAN, cfg.Join.SerfPort)
 	if err != nil {
 		return err
 	}
@@ -476,8 +477,8 @@ func (g *JoinCommand) grpcSetup(ms *meshservice.MeshService) (err error) {
 }
 
 // serfSetup ...
-func (g *JoinCommand) serfSetup(ms *meshservice.MeshService, listenIP net.IP, meshIPs []string, lanMode bool) (err error) {
-	ms.NewSerfCluster(lanMode)
+func (g *JoinCommand) serfSetup(ms *meshservice.MeshService, listenIP net.IP, meshIPs []string, lanMode bool, serfPort int) (err error) {
+	ms.NewSerfCluster(lanMode, serfPort)
 
 	err = ms.StartSerfCluster(false, ms.WireguardPubKey, listenIP.String(), g.meshConfig.Wireguard.ListenPort, ms.MeshIP.IP.String())
 	if err != nil {

@@ -64,6 +64,9 @@ type BootstrapConfig struct {
 
 	// SerfModeLAN activates LAN mode or cluster communication. Default is false (=WAN mode).
 	SerfModeLAN bool `yaml:"serf-mode-lan"`
+
+    // SerfPort is the port used by serf
+    SerfPort int `yaml:"serf-port"`
 }
 
 // JoinConfig contains condfiguration parts for join mode
@@ -79,6 +82,9 @@ type JoinConfig struct {
 
 	// ClientCaCert points to PEM-encoded CA certificate.
 	ClientCaCert string `yaml:"ca-cert"`
+
+    // SerfPort is the port used by serf
+    SerfPort int `yaml:"serf-port"`
 }
 
 // BootstrapGRPCTLSConfig contains settings necessary for configuration TLS for the bootstrap node
@@ -151,12 +157,14 @@ func NewDefaultConfig() Config {
 			},
 			MeshEncryptionKey: envStrWithDefault("WGMESH_ENCRYPTION_KEY", ""),
 			SerfModeLAN:       envBoolWithDefault("WGMESH_SERF_MODE_LAN", false),
+            SerfPort:          envIntWithDefault("WGMESH_SERF_PORT", 15353),
 		},
 		Join: &JoinConfig{
 			BootstrapEndpoint: envStrWithDefault("WGMESH_BOOTSTRAP_ADDR", ""),
 			ClientKey:         envStrWithDefault("WGMESH_CLIENT_KEY", ""),
 			ClientCert:        envStrWithDefault("WGMESH_CLIENT_CERT", ""),
 			ClientCaCert:      envStrWithDefault("WGMESH_CA_CERT", ""),
+            SerfPort:          envIntWithDefault("WGMESH_SERF_PORT", 15353),
 		},
 		Wireguard: &WireguardConfig{
 			ListenAddr: envStrWithDefault("WGMESH_WIREGUARD_LISTEN_ADDR", ""),

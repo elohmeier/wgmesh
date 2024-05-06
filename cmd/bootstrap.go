@@ -64,6 +64,7 @@ func NewBootstrapCommand() *BootstrapCommand {
 	c.fs.StringVar(&c.meshConfig.Bootstrap.MeshEncryptionKey, "mesh-encryption-key", c.meshConfig.Bootstrap.MeshEncryptionKey, "optional key for symmetric encryption of internal mesh traffic. Must be 32 Bytes base64-ed.\nenv:WGMESH_ENCRYPTION_KEY")
 	c.fs.BoolVar(&c.devMode, "dev", c.devMode, "Enables development mode which runs without encryption, authentication and without TLS")
 	c.fs.BoolVar(&c.meshConfig.Bootstrap.SerfModeLAN, "serf-mode-lan", c.meshConfig.Bootstrap.SerfModeLAN, "Activates LAN mode or cluster communication. Default is false (=WAN mode).\nenv:WGMESH_SERF_MODE_LAN")
+    c.fs.IntVar(&c.meshConfig.Bootstrap.SerfPort, "serf-port", c.meshConfig.Bootstrap.SerfPort, "Port for serf communication.\nenv:WGMESH_SERF_PORT")
 	c.fs.StringVar(&c.meshConfig.Agent.GRPCBindSocket, "agent-grpc-bind-socket", c.meshConfig.Agent.GRPCBindSocket, "local socket file to bind grpc agent to.\nenv:WGMESH_AGENT_BIND_SOCKET")
 	c.fs.StringVar(&c.meshConfig.Agent.GRPCBindSocketIDs, "agent-grpc-bind-socket-id", c.meshConfig.Agent.GRPCBindSocketIDs, "<uid:gid> to change bind socket to.\nenv:WGMESH_AGENT_BIND_SOCKET_ID")
 	c.DefaultFields(c.fs)
@@ -403,7 +404,7 @@ func (g *BootstrapCommand) serfSetup(ms *meshservice.MeshService, pk string, wgL
 	cfg := g.meshConfig
 
 	// create and start the serf cluster
-	ms.NewSerfCluster(cfg.Bootstrap.SerfModeLAN)
+	ms.NewSerfCluster(cfg.Bootstrap.SerfModeLAN, cfg.Bootstrap.SerfPort)
 
 	err = ms.StartSerfCluster(
 		true,

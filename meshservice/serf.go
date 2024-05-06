@@ -17,9 +17,9 @@ import (
 // NewSerfCluster sets up a cluster with a given nodeName,
 // a bind address. it also registers a user event listener
 // which acts upon Join and Leave user messages
-func (ms *MeshService) NewSerfCluster(lanMode bool) {
+func (ms *MeshService) NewSerfCluster(lanMode bool, serfPort int) {
 
-	cfg := serfCustomConfig(ms.NodeName, ms.MeshIP.IP.String(), lanMode)
+	cfg := serfCustomConfig(ms.NodeName, ms.MeshIP.IP.String(), serfPort, lanMode)
 
 	// set up the event handler for all user events
 	ch := make(chan serf.Event, 1)
@@ -162,7 +162,7 @@ func (ms *MeshService) StartStatsUpdater() {
 	}()
 }
 
-func serfCustomConfig(nodeName string, bindAddr string, lanMode bool) *serf.Config {
+func serfCustomConfig(nodeName string, bindAddr string, bindPort int, lanMode bool) *serf.Config {
 
 	var ml *memberlist.Config
 
@@ -171,7 +171,7 @@ func serfCustomConfig(nodeName string, bindAddr string, lanMode bool) *serf.Conf
 	} else {
 		ml = memberlist.DefaultWANConfig()
 	}
-	ml.BindPort = 5353
+	ml.BindPort = bindPort
 	ml.BindAddr = bindAddr
 
 	return &serf.Config{
